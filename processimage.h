@@ -9,5 +9,7 @@ class Image
     cv::Mat img;
 public:
     Image(QString name);
+    cv::Mat getImage();
+    cv::Mat getProcessedImage();
 };
 #endif // PROCESSIMAGE_H
