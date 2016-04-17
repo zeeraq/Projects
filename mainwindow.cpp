@@ -1,9 +1,5 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "processimage.h"
-#include <QFileDialog>
-#include <iostream>
-void processImage(QString imgName);
+
 using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,7 +24,27 @@ void MainWindow::on_toolButton_clicked()
     cout << "Selected file "<<fileName.toStdString() << endl;
     processImage(fileName);
 }
-void processImage(QString imgName)
+
+void MainWindow::setDisplayImage(cv::Mat imgMat)
+{
+    cout << "image type " << imgMat.type() <<" rows " << imgMat.rows << " cols " << imgMat.cols << endl;
+    cv::Mat resized;
+    cv::resize(imgMat, resized, cv::Size(ui->displayLabel->width(),ui->displayLabel->height()),0,0, cv::INTER_CUBIC);
+    QImage img = QImage((uchar*)resized.data, resized.cols, resized.rows, resized.step, QImage::Format_RGB888);
+    ui->displayLabel->setPixmap(QPixmap::fromImage(img));
+}
+
+void MainWindow::setProcessedImage(cv::Mat imgMat)
+{
+    cv::Mat resized;
+    cv::resize(imgMat, resized, cv::Size(ui->displayLabel->width(),ui->displayLabel->height()),0,0, cv::INTER_CUBIC);
+    QImage img = QImage((uchar*)resized.data, resized.cols, resized.rows, resized.step, QImage::Format_Indexed8/* QImage::Format_RGB888*/);
+    ui->processedLabel->setPixmap(QPixmap::fromImage(img));
+}
+
+void MainWindow::processImage(QString imgName)
 {
     Image * image = new Image(imgName);
+    setDisplayImage(image->getImage());
+    setProcessedImage(image->getProcessedImage());
 }

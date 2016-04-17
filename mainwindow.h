@@ -2,7 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "ui_mainwindow.h"
+#include "processimage.h"
+#include <QFileDialog>
+#include <iostream>
+#include <QGraphicsPixmapItem>
 namespace Ui {
 class MainWindow;
 }
@@ -20,6 +24,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    void processImage(QString imgName);
+    void setDisplayImage(cv::Mat img);
+    void setProcessedImage(cv::Mat imgMat);
 };
 
 #endif // MAINWINDOW_H
